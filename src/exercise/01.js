@@ -79,10 +79,15 @@ function useUser() {
 
 const updateUser = async (dispatch, user, updates) => {
   dispatch({type: 'start update', updates})
-  return userClient.updateUser(user, updates).then(
-    updatedUser => dispatch({type: 'finish update', updatedUser}),
-    error => dispatch({type: 'fail update', error}),
-  )
+  try {
+    const updatedUser = await userClient.updateUser(user, updates)
+    dispatch({type: 'finish update', updatedUser})
+    return updatedUser
+  } catch (error) {
+    dispatch({type: 'fail update', error})
+    // return Promise.reject(error)
+    throw error
+  }
 }
 
 // export {UserProvider, useUser, updateUser}
@@ -112,6 +117,15 @@ function UserSettings() {
     //   error => userDispatch({type: 'fail update', error}),
     // )
     updateUser(userDispatch, user, formState)
+    /*
+    updateUser(userDispatch, user, formState)
+      .then(updatedUser => {
+        // what to do with updatedUser
+      })
+      .catch(error => {
+        // what to do with error
+      })
+    */
   }
 
   return (
