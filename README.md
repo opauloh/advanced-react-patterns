@@ -234,6 +234,23 @@ function Counter() {
 }
 ```
 
+_Passing raw dispatch down also makes code splitting such "async methods"
+easier. You import them from the leaf component that uses them instead of the
+root component. So you only pay for what you use where you use it - Dan Abramov_
+
+A benefit of doing things this way is that, when we have multiple dispatch that
+we need to be calling, is very easy for the user to miss the order os miss some
+of these calls, so the best is to group into a helper function. Common thing
+people do instead is put the helpers inside the consumer hook of the value, but
+then you have to memoize and take care about performance and useCallback
+dependency list, and in addition this means you can't code splitting or tree
+shake this codes into modules functions, it also hurts the ability of lazyling
+load this helper functions as well. This is currently a typical patern at
+Facebook and many other larger codebases
+
+- [**dequal**](https://github.com/lukeed/dequal#readme) is a "deep equal" js
+  utility
+
 ## Contributors
 
 Thanks goes to these wonderful people
