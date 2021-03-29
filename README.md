@@ -248,6 +248,48 @@ shake this codes into modules functions, it also hurts the ability of lazyling
 load this helper functions as well. This is currently a typical patern at
 Facebook and many other larger codebases
 
+- **Compound Components** - These are components that works together to form a
+  complete UI, an example of that is `<select>` and `<option>` in HTML:
+
+```html
+<select>
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+</select>
+```
+
+[https://reach.tech/](Reach UI) components implements this pattern a lot:
+[https://reach.tech/tabs/](https://reach.tech/tabs/)
+
+- This pattern is useful because if gives more flexibility to the consumer of
+  the API, because who are consuming can define what props or components it will
+  have inside the wrapper component and the order, and still have access to the
+  state of the component. Also is good for maintaining side as it is less code
+  to generate and less use cases to predict
+
+Example:
+
+```js
+function Toggle({children}) {
+  const [on, setOn] = React.useState(false)
+  const toggle = () => setOn(!on)
+
+  // instead of returning <Switch on={on} onClick={toggle} />, as it is on most of API,
+  // we are iterating over React.Children and returning a cloned version of the chidren overriding
+  // the props we want
+  return React.Children.map(children, (child, index) => {
+    return React.cloneElement(child, {
+      toggle,
+      on,
+    })
+  })
+}
+```
+
+- **React.Children** - get all children in the component
+- **React.cloneElement** - cloned version of the component, can override props
+  on the second argument
+
 - [**dequal**](https://github.com/lukeed/dequal#readme) is a "deep equal" js
   utility
 
