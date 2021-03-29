@@ -295,6 +295,29 @@ function Toggle({children}) {
 - [**dequal**](https://github.com/lukeed/dequal#readme) is a "deep equal" js
   utility
 
+- A DOM component is a built-in component like `<div />`, `<span />`, or
+  `<blink />`. A composite component is a custom component like `<Toggle />` or
+  `<App />`.
+- A easy way to differentiate between composite component vs DOM component is
+  check the type, if `typeof type === 'function'` is true then is composite,
+  otherwise it's a DOM component. Or if you preffer the opposite: if
+  `typeof type === 'string'` is true then is DOM.
+- If you want to prevent adding implicity props for every component, you can
+  create a rule like:
+
+```js
+const allowedTypes = [ToggleOn, ToggleOff, ToggleButton]
+
+//...
+return React.children.map(children, child => {
+  if (allowedTypes.includes(child.type)) {
+    return React.cloneElement(child, {on, toggle})
+  }
+  return child
+})
+//...
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
