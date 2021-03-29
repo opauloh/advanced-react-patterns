@@ -265,7 +265,9 @@ Facebook and many other larger codebases
   the API, because who are consuming can define what props or components it will
   have inside the wrapper component and the order, and still have access to the
   state of the component. Also is good for maintaining side as it is less code
-  to generate and less use cases to predict
+  to generate and less use cases to predict. At least, it's implicit from the
+  perspective of the users, and it's explicit from the perspective of this
+  toggle component.That's how you share implicit state for compound components.
 
 Example:
 
