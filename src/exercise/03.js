@@ -48,7 +48,7 @@ function ToggleOff({children}) {
 }
 
 // 🐨 get `on` and `toggle` from the ToggleContext with `useContext`
-function ToggleButton({...props}) {
+function ToggleButton(props) {
   const {on, toggle} = useToggle()
   return <Switch on={on} onClick={toggle} {...props} />
 }
