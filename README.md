@@ -359,6 +359,21 @@ function App() {
 //...
 ```
 
+Remember to add a helper function, so your context won't be exposed:
+
+```js
+const ToggleContext = React.createContext()
+
+const useToggle = () => React.useContext(ToggleContext)
+
+//...
+function ToggleOn({children}) {
+  const {on} = useToggle()
+  return on ? children : null
+}
+//...
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
