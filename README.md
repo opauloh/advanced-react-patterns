@@ -325,6 +325,40 @@ multiple nested children instead of just the immediate children.
 [@reach/accordion](https://reach.tech/accordion/) is an example of Real World
 project that uses this pattern
 
+Ex:
+
+```js
+//...
+const ToggleContext = React.createContext()
+//...
+function ToggleOn({children}) {
+  const {on} = React.useContext(ToggleContext)
+  return on ? children : null
+}
+function ToggleOff({children}) {
+  const {on} = React.useContext(ToggleContext)
+  return on ? null : children
+}
+function ToggleButton({...props}) {
+  const {on, toggle} = React.useContext(ToggleContext)
+  return <Switch on={on} onClick={toggle} {...props} />
+}
+function App() {
+  return (
+    <div>
+      <Toggle>
+        <ToggleOn>The button is on</ToggleOn>
+        <ToggleOff>The button is off</ToggleOff>
+        <div>
+          <ToggleButton />
+        </div>
+      </Toggle>
+    </div>
+  )
+}
+//...
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
