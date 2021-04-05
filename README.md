@@ -374,6 +374,22 @@ function ToggleOn({children}) {
 //...
 ```
 
+- Custom hooks validation: We can always help the user of our custom hook to
+  have a better understandingt about our API by providing custom validations:
+
+```js
+const ToggleContext = React.createContext()
+
+const useToggle = () => {
+  const context = React.useContext(ToggleContext)
+  // if context is undefined it means useToggle was called without being wrapped by a ToggleContext.Provider
+  if (!context) {
+    throw new Error(`useToggle must be used within a Toggle`)
+  }
+  return context
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
