@@ -318,6 +318,13 @@ return React.children.map(children, child => {
 //...
 ```
 
+**Flexible Compound Components** - This pattern is more advanced that his
+previous version _Compound Components_ because it allow to pass state to
+multiple nested children instead of just the immediate children.
+
+[@reach/accordion](https://reach.tech/accordion/) is an example of Real World
+project that uses this pattern
+
 ## Contributors
 
 Thanks goes to these wonderful people
