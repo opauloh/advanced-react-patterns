@@ -402,6 +402,46 @@ ToggleContext.displayName = 'ToggleContext'
 
 ![image](https://user-images.githubusercontent.com/19270322/113576705-70174a00-95f6-11eb-981f-c63fa4d53b1a.png)
 
+**Prop Collections and Getters** - Techinique used to pass attributes or common
+props down to reusable components, usually used with custom hooks. I.e for
+accessibility purposes a button functioning as toggle should have the
+`aria-pressed` attribute set to `true` or `false` when toggled, also the onClick
+handler, so instead of having to remember to pass down that props for every
+component we use prop getters.
+
+Real World Projects that use this pattern:
+
+[downshift](https://github.com/downshift-js/downshift) (uses prop getters)
+[react-table](https://github.com/tannerlinsley/react-table) (uses prop getters)
+[@reach/tooltip](https://reach.tech/tooltip/) (uses prop collections)
+
+Ex:
+
+```js
+//...
+function useToggle() {
+  const [on, setOn] = React.useState(false)
+  const toggle = () => setOn(!on)
+
+  return {on, toggle, togglerProps: {'aria-pressed': on, onClick: toggle}}
+}
+//...
+function App() {
+  const {on, togglerProps} = useToggle()
+  return (
+    <div>
+      {/* <span class="toggle-btn toggle-btn-off" aria-pressed="false"></span> */}
+      <Switch on={on} {...togglerProps} />
+      <hr />
+      {/* <button aria-label="custom-button" aria-pressed="false">off</button> */}
+      <button aria-label="custom-button" {...togglerProps}>
+        {on ? 'on' : 'off'}
+      </button>
+    </div>
+  )
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
