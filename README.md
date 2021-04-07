@@ -415,7 +415,7 @@ Real World Projects that use this pattern:
 [react-table](https://github.com/tannerlinsley/react-table) (uses prop getters)
 [@reach/tooltip](https://reach.tech/tooltip/) (uses prop collections)
 
-Ex:
+_Prop Collection_ Ex:
 
 ```js
 //...
@@ -439,6 +439,65 @@ function App() {
       </button>
     </div>
   )
+}
+```
+
+_Prop Getter_ Ex:
+
+```js
+//...
+function useToggle() {
+  const [on, setOn] = React.useState(false)
+  const toggle = () => setOn(!on)
+
+    const getTogglerProps = ({onClick, on, ...props}) => ({
+    onClick: () => {
+      toggle()
+      // onClick?.() // or
+      // onClick: callAll(onClick, toggle), // or²
+      typeof onClick === 'function' && onClick()
+    },
+    on,
+    ...props,
+  })
+
+  return {
+    on,
+    toggle,
+    getTogglerProps,
+  }
+}
+//...
+function App() {
+  return (
+    <div>
+      <Switch {...getTogglerProps({on})} />
+      <hr />
+      <button
+        {...getTogglerProps({
+          'aria-label': 'custom-button',
+          onClick: () => console.info('onButtonClick'),
+          id: 'custom-button-id',
+        })}
+      >
+    </div>
+  )
+}
+```
+
+**getAll function** is a techinique used to compose multiple functions calls,
+where we can have any number of functions as arguments, and check if they exists
+and call only if exists
+
+I.e:
+
+```js
+function callAll(...fns) {
+  return (...args) => {
+    fns.forEach(fn => {
+      fn && fn(...args)
+    })
+  }
 }
 ```
 
