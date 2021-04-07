@@ -390,6 +390,18 @@ const useToggle = () => {
 }
 ```
 
+- We can also add a better displayName for our contexts, so instead od display
+  `<Context.Provider>` in the developer tools, we can have a better name:
+
+```js
+//...
+const ToggleContext = React.createContext()
+ToggleContext.displayName = 'ToggleContext'
+//...
+```
+
+![image](https://user-images.githubusercontent.com/19270322/113576705-70174a00-95f6-11eb-981f-c63fa4d53b1a.png)
+
 ## Contributors
 
 Thanks goes to these wonderful people

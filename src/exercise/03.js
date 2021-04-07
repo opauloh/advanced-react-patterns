@@ -8,6 +8,7 @@ import {Switch} from '../switch'
 // 📜 https://reactjs.org/docs/context.html#reactcreatecontext
 
 const ToggleContext = React.createContext()
+ToggleContext.displayName = 'ToggleContext'
 
 const useToggle = () => {
   const context = React.useContext(ToggleContext)
@@ -62,7 +63,13 @@ function ToggleButton(props) {
 function App() {
   return (
     <div>
-      <ToggleButton />
+      <Toggle>
+        <ToggleOn>The button is on</ToggleOn>
+        <ToggleOff>The button is off</ToggleOff>
+        <div>
+          <ToggleButton />
+        </div>
+      </Toggle>
     </div>
   )
 }
