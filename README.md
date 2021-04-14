@@ -594,6 +594,16 @@ function toggleStateReducer(state, action) {
 }
 ```
 
+When using State Reducer, consider creating a Action Types, so we can avoid
+typos (or simply use TS :p)
+
+```js
+const actionTypes = {
+  toggle: 'toggle',
+  reset: 'reset',
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
