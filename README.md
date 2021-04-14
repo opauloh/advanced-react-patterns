@@ -563,6 +563,37 @@ function App() {
 }
 ```
 
+We can also export our reducer, so the user can extend, without having to
+reimplement everything:
+
+```js
+const toggleReducerActions = {
+  toggle: 'toggle',
+  reset: 'reset',
+}
+
+function toggleReducer(state, {type, initialState}) {
+  switch (type) {
+    case toggleReducerActions.toggle: {
+      return {on: !state.on}
+    }
+    case toggleReducerActions.reset: {
+      return initialState
+    }
+    default: {
+      throw new Error(`Unsupported type: ${type}`)
+    }
+  }
+}
+
+function toggleStateReducer(state, action) {
+  if (action.type === toggleReducerActions.toggle && clickedTooMuch) {
+    return {on: state.on}
+  }
+  return toggleReducer(state, action)
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
