@@ -501,6 +501,68 @@ function callAll(...fns) {
 }
 ```
 
+**State Reducer** - Is a Pattern that provides inversion of control by using
+react reducer. Main benefit is avoid the never ending list of logical
+customizations that people could want out of our custom hook. So, basically, we
+create a default reducer for our hook, but we also allow the user of the hook to
+provide his very own custom reducer, so he can extend and add any new
+functionality he desires
+
+Real World Projects that use this pattern:
+
+[downshift](https://github.com/downshift-js/downshift)
+
+Ex:
+
+```js
+function toggleReducer(state, {type, initialState}) {
+  switch (type) {
+    case 'toggle': {
+      return {on: !state.on}
+    }
+    case 'reset': {
+      return initialState
+    }
+    default: {
+      throw new Error(`Unsupported type: ${type}`)
+    }
+  }
+}
+
+function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
+  const {current: initialState} = React.useRef({on: initialOn})
+
+  //....
+}
+
+function App() {
+  const [timesClicked, setTimesClicked] = React.useState(0)
+  const clickedTooMuch = timesClicked >= 4
+
+  function toggleStateReducer(state, action) {
+    switch (action.type) {
+      case 'toggle': {
+        if (clickedTooMuch) {
+          return {on: state.on}
+        }
+        return {on: !state.on}
+      }
+      case 'reset': {
+        return {on: false}
+      }
+      default: {
+        throw new Error(`Unsupported type: ${action.type}`)
+      }
+    }
+  }
+
+  const {on, getTogglerProps, getResetterProps} = useToggle({
+    reducer: toggleStateReducer,
+  })
+  //...
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
