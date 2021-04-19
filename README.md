@@ -627,6 +627,74 @@ Real World Projects that use this pattern:
 [downshift](https://github.com/downshift-js/downshift)
 [@reach/listbox](https://reach.tech/listbox/)
 
+```js
+function useToggle({
+  initialOn = false,
+  reducer = toggleReducer,
+  onChange,
+  on: controlledOn,
+} = {}) {
+  const {current: initialState} = React.useRef({on: initialOn})
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const onIsControlled = controlledOn != null
+  const on = onIsControlled ? controlledOn : state.on
+  const dispatchWithOnChange = action => {
+    if (!onIsControlled) {
+      dispatch(action)
+    }
+    onChange?.(reducer({...state, on}, action), action)
+  }
+  const toggle = () => dispatchWithOnChange({type: actionTypes.toggle})
+  const reset = () =>
+    dispatchWithOnChange({type: actionTypes.reset, initialState})
+
+  function getTogglerProps({onClick, ...props} = {}) {
+    return {
+      'aria-pressed': on,
+      onClick: callAll(onClick, toggle),
+      ...props,
+    }
+  }
+
+  function getResetterProps({onClick, ...props} = {}) {
+    return {
+      onClick: callAll(onClick, reset),
+      ...props,
+    }
+  }
+
+  return {
+    on,
+    reset,
+    toggle,
+    getTogglerProps,
+    getResetterProps,
+  }
+}
+
+function Toggle({on: controlledOn, onChange}) {
+  const {on, getTogglerProps} = useToggle({on: controlledOn, onChange})
+  const props = getTogglerProps({on})
+  return <Switch {...props} />
+}
+function App() {
+  const [bothOn, setBothOn] = React.useState(false)
+
+  const handleToggleChange = (state, action) => setBothOn(state.on)
+
+  return (
+//...
+  <Toggle on={bothOn} onChange={handleToggleChange} />
+  <Toggle
+    onChange={(...args) =>
+      console.info('Uncontrolled Toggle onChange', ...args)
+    }
+  />
+  //...
+  )
+}
+```
+
 **Variable Shadowing** - In computer programming, variable shadowing occurs when
 a variable declared within a certain scope (decision block, method, or inner
 class) has the same name as a variable declared in an outer scope. At the level
