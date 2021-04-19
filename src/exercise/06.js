@@ -57,7 +57,7 @@ function useToggle({
     if (!onIsControlled) {
       dispatch(action)
     }
-    onChange && onChange(reducer({...state, on}, action), action)
+    onChange?.(reducer({...state, on}, action), action)
   }
 
   // 🦉 "Suggested changes" refers to: the changes we would make if we were
