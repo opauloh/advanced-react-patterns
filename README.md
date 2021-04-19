@@ -604,6 +604,45 @@ const actionTypes = {
 }
 ```
 
+**Control Props** - In this pattern we want to let the user decide wheter he
+wants to control the value by itself while also supporting the default, so user
+can pass his own state and a onChange function, or just use as it is. This
+concept is basically the same as controlled form elements in React:
+
+```js
+function MyCapitalizedInput() {
+  const [capitalizedValue, setCapitalizedValue] = React.useState('')
+
+  return (
+    <input
+      value={capitalizedValue}
+      onChange={e => setCapitalizedValue(e.target.value.toUpperCase())}
+    />
+  )
+}
+```
+
+Real World Projects that use this pattern:
+
+[downshift](https://github.com/downshift-js/downshift)
+[@reach/listbox](https://reach.tech/listbox/)
+
+**Variable Shadowing** - In computer programming, variable shadowing occurs when
+a variable declared within a certain scope (decision block, method, or inner
+class) has the same name as a variable declared in an outer scope. At the level
+of identifiers (names, rather than variables), this is known as name masking.
+This outer variable is said to be shadowed by the inner variable, while the
+inner identifier is said to mask the outer identifier. This can lead to
+confusion, as it may be unclear which variable subsequent uses of the shadowed
+variable name refer to, which depends on the name resolution rules of the
+language.
+
+- use `!= null` to verify if value is not null nor undefined:
+
+```js
+const onIsControlled = controlledOn != null
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
