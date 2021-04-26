@@ -711,6 +711,10 @@ language.
 const onIsControlled = controlledOn != null
 ```
 
+**warning** - https://www.npmjs.com/package/warning - this package is a mirror
+of Facebook's (FB) warning module used within React's source code, useful when
+we want to provide useful console errors but for development only
+
 ## Contributors
 
 Thanks goes to these wonderful people
