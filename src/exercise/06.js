@@ -31,6 +31,7 @@ function useToggle({
   reducer = toggleReducer,
   onChange,
   on: controlledOn,
+  readOnly = false,
   // 🐨 add an `onChange` prop.
   // 🐨 add an `on` option here
   // 💰 you can alias it to `controlledOn` to avoid "variable shadowing."
@@ -40,15 +41,34 @@ function useToggle({
   // 🐨 determine whether on is controlled and assign that to `onIsControlled`
   // 💰 `controlledOn != null`
   const onIsControlled = controlledOn != null
-
-  warning(
-    controlledOn && onChange,
-    'Failed prop type: You provided a `value` prop to a form field without an `onChange` handler.',
-  )
-
   // 🐨 Replace the next line with assigning `on` to `controlledOn` if
   // `onIsControlled`, otherwise, it should be `state.on`.
   const on = onIsControlled ? controlledOn : state.on
+  const hasOnChange = Boolean(onChange)
+
+  const {current: onWasControlled} = React.useRef(onIsControlled)
+
+  React.useEffect(() => {
+    warning(
+      !(onIsControlled && !onWasControlled),
+      'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
+    )
+    warning(
+      !(!onIsControlled && !onWasControlled),
+      'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
+    )
+  }, [onIsControlled, onWasControlled])
+  React.useEffect(() => {
+    // if (!hasOnChange && onIsControlled && !readOnly) {
+    //   console.error(
+    //     'An on prop was provided to useToggle without an onChange handler. This will render a read-only toggle. If you want it to be mutable, use initialOn. Otherwise, set either onChange or readOnly.',
+    //   )
+    // }
+    warning(
+      !(!hasOnChange && onIsControlled && !readOnly),
+      'An on prop was provided to useToggle without an onChange handler. This will render a read-only toggle. If you want it to be mutable, use initialOn. Otherwise, set either onChange or readOnly.',
+    )
+  }, [hasOnChange, onIsControlled, readOnly])
 
   // We want to call `onChange` any time we need to make a state change, but we
   // only want to call `dispatch` if `!onIsControlled` (otherwise we could get
@@ -112,8 +132,12 @@ function useToggle({
   }
 }
 
-function Toggle({on: controlledOn, onChange}) {
-  const {on, getTogglerProps} = useToggle({on: controlledOn, onChange})
+function Toggle({on: controlledOn, onChange, readOnly}) {
+  const {on, getTogglerProps} = useToggle({
+    on: controlledOn,
+    onChange,
+    readOnly,
+  })
   const props = getTogglerProps({on})
   return <Switch {...props} />
 }
