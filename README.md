@@ -719,6 +719,23 @@ we want to provide useful console errors but for development only
   [useControlledSwitchWarning](https://github.com/reach/reach-ui/blob/a376daec462ccb53d33f4471306dff35383a03a5/packages/utils/src/index.tsx#L407-L443)
   for a custom hook for control props warning
 
+- You can useRef to perceive controled from uncontrolled changes:
+
+```js
+const {current: onWasControlled} = React.useRef(onIsControlled)
+
+React.useEffect(() => {
+  warning(
+    !(onIsControlled && !onWasControlled),
+    'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
+  )
+  warning(
+    !(!onIsControlled && onWasControlled),
+    'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
+  )
+}, [onIsControlled, onWasControlled])
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
