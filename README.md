@@ -715,6 +715,10 @@ const onIsControlled = controlledOn != null
 of Facebook's (FB) warning module used within React's source code, useful when
 we want to provide useful console errors but for development only
 
+- check the
+  [useControlledSwitchWarning](https://github.com/reach/reach-ui/blob/a376daec462ccb53d33f4471306dff35383a03a5/packages/utils/src/index.tsx#L407-L443)
+  for a custom hook for control props warning
+
 ## Contributors
 
 Thanks goes to these wonderful people
