@@ -54,7 +54,7 @@ function useToggle({
       'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
     )
     warning(
-      !(!onIsControlled && !onWasControlled),
+      !(!onIsControlled && onWasControlled),
       'useToggle is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled useToggle for the lifetime of the component. Check the on prop',
     )
   }, [onIsControlled, onWasControlled])
