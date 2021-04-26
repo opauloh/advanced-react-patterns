@@ -3,6 +3,7 @@
 
 import * as React from 'react'
 import {Switch} from '../switch'
+import warning from 'warning'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
 
@@ -39,6 +40,11 @@ function useToggle({
   // 🐨 determine whether on is controlled and assign that to `onIsControlled`
   // 💰 `controlledOn != null`
   const onIsControlled = controlledOn != null
+
+  warning(
+    controlledOn && onChange,
+    'Failed prop type: You provided a `value` prop to a form field without an `onChange` handler.',
+  )
 
   // 🐨 Replace the next line with assigning `on` to `controlledOn` if
   // `onIsControlled`, otherwise, it should be `state.on`.
