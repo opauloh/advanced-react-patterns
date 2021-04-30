@@ -814,8 +814,8 @@ Note: we are breaking rule of hooks by calling it conditionally, but that's
 intentional, first because we are not actually breaking the rule because we know
 that `process.env.NODE_ENV` will never change in the lifetime of the
 application, second because this way we are eliminating code and making our
-component performance better on production by eliminating dead code this hook
-call will never be on production
+component performance better on production by eliminating dead code this hooks
+functions will never be on production thanks to code minification
 
 **command line to quick test build:** `yarn build && npx serve -s build`
 
