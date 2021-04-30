@@ -736,6 +736,60 @@ React.useEffect(() => {
 }, [onIsControlled, onWasControlled])
 ```
 
+You can also create custom hooks for easy reuse those warnings
+
+```js
+function useControlledSwitchWarning(
+  controlPropValue,
+  controlPropName,
+  componentName,
+) {
+  const isControlled = controlPropValue != null
+  const {current: wasControlled} = React.useRef(isControlled)
+
+  React.useEffect(() => {
+    warning(
+      !(isControlled && !wasControlled),
+      `${componentName} is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled ${componentName} for the lifetime of the component. Check the ${controlPropName} prop`,
+    )
+    warning(
+      !(!isControlled && wasControlled),
+      `${componentName} is changing from uncontrolled to be controlled. Components should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled ${componentName} for the lifetime of the component. Check the ${controlPropName} prop`,
+    )
+  }, [isControlled, wasControlled, componentName, controlPropName])
+}
+
+function useOnChageReadonlyWarning(
+  controlPropValue,
+  controlPropName,
+  componentName,
+  onChange,
+  readOnly,
+  initialValueProp = 'initialValue',
+  readOnlyProp = 'readOnly',
+  onChangeProp = 'onChange',
+) {
+  const hasOnChange = Boolean(onChange)
+  const isControlled = controlPropValue != null
+
+  React.useEffect(() => {
+    warning(
+      !(!hasOnChange && isControlled && !readOnly),
+      `An ${controlPropName} prop was provided to ${componentName} without an ${onChangeProp} handler. This will render a read-only ${componentName}. If you want it to be mutable, use ${initialValueProp}. Otherwise, set either ${onChangeProp} or ${readOnlyProp}.`,
+    )
+  }, [
+    hasOnChange,
+    isControlled,
+    readOnly,
+    componentName,
+    controlPropName,
+    onChangeProp,
+    initialValueProp,
+    readOnlyProp,
+  ])
+}
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
