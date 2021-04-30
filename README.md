@@ -790,6 +790,35 @@ function useOnChageReadonlyWarning(
 }
 ```
 
+**Don't warn in production** - we can use
+`process.env.NODE_ENV === 'production'` to determine wheter or not we are in
+`production` environment
+
+```js
+if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useControlledSwitchWarning(controlledOn, 'on', 'useToggle')
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useOnChageReadonlyWarning(
+    controlledOn,
+    'on',
+    'useToggle',
+    onChange,
+    readOnly,
+    'initialOn',
+  )
+}
+```
+
+Note: we are breaking rule of hooks by calling it conditionally, but that's
+intentional, first because we are not actually breaking the rule because we know
+that `process.env.NODE_ENV` will never change in the lifetime of the
+application, second because this way we are eliminating code and making our
+component performance better on production by eliminating dead code this hook
+call will never be on production
+
+**command line to quick test build:** `yarn build && npx serve -s build`
+
 ## Contributors
 
 Thanks goes to these wonderful people
