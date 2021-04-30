@@ -96,15 +96,19 @@ function useToggle({
   const on = onIsControlled ? controlledOn : state.on
   // const hasOnChange = Boolean(onChange)
 
-  useControlledSwitchWarning(controlledOn, 'on', 'useToggle')
-  useOnChageReadonlyWarning(
-    controlledOn,
-    'on',
-    'useToggle',
-    onChange,
-    readOnly,
-    'initialOn',
-  )
+  if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useControlledSwitchWarning(controlledOn, 'on', 'useToggle')
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useOnChageReadonlyWarning(
+      controlledOn,
+      'on',
+      'useToggle',
+      onChange,
+      readOnly,
+      'initialOn',
+    )
+  }
   // const {current: onWasControlled} = React.useRef(onIsControlled)
 
   // React.useEffect(() => {
